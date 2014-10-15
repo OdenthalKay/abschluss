@@ -1,0 +1,6 @@
+    <div ng-controller="TutorialsController" data-ng-init="findAll()">
+      <ul>
+      	<h1>Tutorials: {{tutorials.length}}</h1>
+      	<li ng-repeat="tutorial in tutorials">{{tutorial.name}}</li>
+      </ul>
+    </div>

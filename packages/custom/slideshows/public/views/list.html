@@ -1,0 +1,6 @@
+    <div ng-controller="SlideshowsController" data-ng-init="findAll()">
+      <ul>
+      	<h1>Slideshows: {{slideshows.length}}</h1>
+      	<li ng-repeat="slideshow in slideshows">{{slideshow.name}}</li>
+      </ul>
+    </div>

@@ -1,0 +1,13 @@
+  
+     
+	<!-- 
+	article ist nicht von Anfang an auf dem Scope definiert, sondern wird durch die Funktion 'findOne()'
+	hinzugefügt. Der Variablenwert würde ansonsten wieder beim Aufruf der Route wieder geresettet werden,
+	da der controller neu geladen wird.
+	-->
+     <div ng-controller="TutorialsController" data-ng-init="findOne()">
+      <h2>Tutorial-Name: {{tutorial.name}}</h2>
+      <a class="btn" data-ng-click="remove(tutorial);">
+            <i class="glyphicon glyphicon-trash"></i>
+       </a>
+    </div>
