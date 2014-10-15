@@ -1,0 +1,7 @@
+.scrollable-slide-list {
+  overflow-y: scroll;
+  height: 800px;
+    background-color: #666666;
+  width: 100%;
+  text-align: center;
+}

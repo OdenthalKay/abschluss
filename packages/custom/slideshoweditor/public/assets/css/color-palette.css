@@ -1,0 +1,34 @@
+/*
+* CSS: Color Palette
+*
+*/
+.color {
+  width: 20px;
+  height: 20px;
+  /* wird beim hover sichtbar (= weiss)*/
+  border: 1px solid black;
+}
+
+/* CSS table - mimt die HTML Tags <table>, <tr> und <td> */
+.color-palette {
+  display: table;
+  /* Abstand zwischen den einzelnen Farben */
+  border-spacing: 4px;
+}
+
+.palette-row {
+  padding: 3px;
+  display: table-row;
+}
+
+.palette-column {
+  display: table-cell;
+}
+
+/* zwischen doppelpunkt und hover darf kein leerzeichen sein, sonst geht es nicht!*/
+.palette-column:hover {
+  border: 1px solid white;
+  cursor: pointer;
+  cursor: hand;
+  display: table-cell;
+}

@@ -1,0 +1,6 @@
+<div id="color-palette">
+  <div ng-repeat="row in rows track by $index" ng-init="$rowIndex = $index" class="palette-row">
+    <div ng-repeat="color in row track by $index" ng-click="getColor($rowIndex,$index)" class="palette-column color"  style="background-color:{{color}}"></div>
+
+  </div>
+</div>

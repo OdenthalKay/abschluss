@@ -1,0 +1,27 @@
+.slideshow-example h1 {
+  background-color: purple
+}
+
+
+.left {
+	display: inline-block;
+	width: 200px;
+	height: 100%;
+	background-color: #775566;
+}
+
+.middle {
+	display: inline-block;
+	vertical-align: top;
+	width: 50%; /* die Hoehe passt sich automatisch an die editor stage an */
+	background-color: #666666;
+}
+
+.right {
+	display: inline-block;
+	vertical-align: top;
+	width: 300px;
+	height: 100%;
+	background-color: #775566;
+}
+
