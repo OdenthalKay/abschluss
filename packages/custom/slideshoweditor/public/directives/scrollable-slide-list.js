@@ -7,7 +7,7 @@ angular.module('mean.slideshoweditor').directive('scrollableSlideListDirective',
 return {
   		restrict: 'E',
   		templateUrl: 'slideshoweditor/views/scrollable-slide-list.html',
-  		      link: function(scope, elem, attr) {
+  		  link: function(scope, elem, attr) {
         /*
          * $timeout ist ein wrapper für window.setTimeout().
          * $timeout führt die Funktion für die Initialisierung der Stages
@@ -20,10 +20,22 @@ return {
          *
          */
         $timeout(function() {
-          for (var i = 0; i < scope.slides.length; i = i+1) {
-            scope.createPreviewStage('slide'+i);
-          }
+          /*
+          Handler registrieren
+          */
+          angular.element('#scrollable-slide-list-add').on('click', function() {
+            scope.addSlide();
+          });
+
+          angular.element('#scrollable-slide-list-remove').on('click', function() {
+            scope.removeSlide();
+          });
+
+
         });
+
+
+  
       }
   	};
 }]); 

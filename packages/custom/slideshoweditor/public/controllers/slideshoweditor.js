@@ -7,18 +7,15 @@
  *
  *
  */
-angular.module('mean.slideshoweditor').controller('SlideshoweditorController', ['$scope', 'Global', 
-  function($scope, Global) {
+angular.module('mean.slideshoweditor').controller('SlideshoweditorController', ['$scope', '$timeout', 'Global', 
+  function($scope, $timeout, Global) {
     $scope.global = Global;
 
   /*
    * Variablen
    *
    */
-  $scope.slides = [
-    {id: 0},
-    {id: 1}
-    ];
+  $scope.slides = [];
   $scope.ratio = 16 / 9;
   $scope.previewStageWidth = 100;
   $scope.previewStageHeight = $scope.previewStageWidth / $scope.ratio;
@@ -31,6 +28,7 @@ angular.module('mean.slideshoweditor').controller('SlideshoweditorController', [
   $scope.editorLayer = {};
 
   $scope.activeStageElement = null;
+  $scope.activePreviewStage = null;
   $scope.color = '#000000';
 
 /* 
@@ -79,12 +77,34 @@ $scope.disableResponsiveness = function() {
   };
 
 
+/*
+   * Wird von der Direktive "scrollableSlideList" aufgerufen.
+   *
+   */
+  $scope.addSlide = function() {
+    var slideId = $scope.slides.length;
+    $scope.slides[$scope.slides.length] = {id: slideId};
+    $scope.$apply(); // muss hier stehen
+
+    $timeout(function() {
+      $scope.createPreviewStage('slide'+slideId);
+    });    
+  };
+
   /*
    * Wird von der Direktive "scrollableSlideList" aufgerufen.
    *
    */
-  $scope.createPreviewStage = function(previewStageDivID) {
+  $scope.removeSlide = function() {
+    if ($scope.activePreviewStage !== null) {
+         $scope.activePreviewStage.destroy();
+         
+         // TODO: zugehörige slide entfernen
+         //$scope.$apply(); // muss hier stehen  
+    }
+  };
 
+  $scope.createPreviewStage = function(previewStageDivID) {
     var stage = new Kinetic.Stage({
       container: previewStageDivID,
       width: $scope.previewStageWidth,
@@ -103,10 +123,13 @@ $scope.disableResponsiveness = function() {
       strokeWidth: 1
     });
 
-    // add the shape to the layer
+    // markiere eine stage als markiert, wenn ihr layer geklickt wurde
+    layer.on('click', function() {
+          $scope.activePreviewStage = layer.getStage();
+      });
+
     layer.add(background);
     stage.add(layer);
-
   };
 
   /*

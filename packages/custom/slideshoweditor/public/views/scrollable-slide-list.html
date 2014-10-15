@@ -1,8 +1,11 @@
 <div class="scrollable-slide-list">
   <div ng-repeat="slide in slides" id="slide{{slide.id}}">
   </div>
-        <button type="button" class="btn btn-success btn-default">
+        <button type="button" id="scrollable-slide-list-add" class="btn btn-success btn-default">
         <span class="glyphicon glyphicon-plus"></span> hinzufügen
+      </button>
+      <button type="button" id="scrollable-slide-list-remove" class="btn btn-danger btn-default">
+        <span class="glyphicon glyphicon-trash"></span> löschen
       </button>
   
 </div>
