@@ -1,6 +1,23 @@
     <div ng-controller="TutorialsController" data-ng-init="findAll()">
-      <ul>
-      	<h1>Tutorials: {{tutorials.length}}</h1>
-      	<li ng-repeat="tutorial in tutorials">{{tutorial.name}}</li>
-      </ul>
+
+      <div class="panel-group">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+              <button class="btn btn-sm btn-success">Neu</button>
+              Tutorials
+            </h4>
+        </div>
+        <div>
+          <div class="panel-body">
+            <ul>
+            	<li ng-repeat="tutorial in tutorials">
+            		<h4><a>{{tutorial.name}}</a><span class="glyphicon glyphicon-trash"></span></h4>
+            		
+            	</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      </div>
     </div>

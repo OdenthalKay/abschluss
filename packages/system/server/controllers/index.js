@@ -19,12 +19,19 @@ exports.render = function(req, res) {
   }
 
   // Send some basic starting info to the view
+
+  /*
+  Hier müssen alle Eigenschaften gesetzt werden, die zur Laufzeit erreichbar sein sollen.
+  => tutorialIds muss hier hinzugefügt werden, damit zur Laufzeit mittels '$scope.global.user' die Zugehörigkeit
+     überprüft werden kann.
+  */
   res.render('index', {
     user: req.user ? {
       name: req.user.name,
       _id: req.user._id,
       username: req.user.username,
-      roles: req.user.roles
+      roles: req.user.roles,
+      tutorialIds: req.user.tutorialIds
     } : {},
     modules: modules,
     isAdmin: isAdmin,

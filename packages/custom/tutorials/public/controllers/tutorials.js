@@ -5,8 +5,8 @@ Die Rückgabeobjekte von get, query sind ebenfalls Instanzen von 'Tutorials'.
 Bei ihnen ist eldiglich das Property '$promise' definiert.
 */
 
-angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$stateParams', '$location', 'Global', 'Tutorials',
-  function($scope, $stateParams, $location, Global, Tutorials) {
+angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Tutorials',
+  function($scope, $stateParams, $location, $http, Global, Tutorials) {
     $scope.global = Global;
     $scope.package = {
       name: 'tutorials'
@@ -43,6 +43,10 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
       });
 
       tutorial.$save(function(response) {
+        // ID des neuen tutorials persistent im userDocument speichern
+        $scope.global.user.tutorialId = response._id;
+        $http.put('/user',{user:$scope.global.user}).success(function(){
+          });
         $location.path('tutorials/' + response._id);
       });
       $scope.name = '';

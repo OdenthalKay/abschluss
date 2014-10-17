@@ -16,13 +16,7 @@ Slideshows.register(function(app, auth, database) {
   //We enable routing. By default the Package Object is passed to the routes
   Slideshows.routes(app, auth, database);
 
-  //We are adding a link to the main menu for all authenticated users
-  Slideshows.menus.add({
-    title: 'slideshows example page',
-    link: 'slideshows example page',
-    roles: ['authenticated'],
-    menu: 'main'
-  });
+  
   
   Slideshows.aggregateAsset('css', 'slideshows.css');
 

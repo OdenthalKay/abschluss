@@ -11,6 +11,34 @@ var mongoose = require('mongoose'),
   nodemailer = require('nodemailer'),
   templates = require('../template');
 
+/*
+Diese Funktion wurde von mir hinzugefügt, damit die Nutzerdaten
+persistent gespeichert werden können. Dies ist insbesondere deswegen wichtig,
+weil die Zugehörigkeit zu einem Tutorial klar sein muss.
+
+Jetzt kann zur Laufzeit abgefragt werden, ob einem Nutzer ein Tutorial gehört oder nicht.
+*/
+exports.update = function(req, res) {
+  var userId = req.param('user')._id;
+  var tutorialId = req.param('user').tutorialId;
+
+  /*
+  Suche User-Dokument und füge die neue tutorialId hinzu
+  */
+  User.findById(userId, function (err, userDocument) {
+      userDocument.tutorialIds.push(tutorialId);
+      userDocument.save(function(){
+       if (err) {
+        return res.json(500, {
+          error: 'Cannot update user'
+        });
+      }
+      res.json(userDocument);
+    });
+  });
+};
+
+
 /**
  * Auth callback
  */
@@ -34,6 +62,8 @@ exports.signin = function(req, res) {
 exports.signout = function(req, res) {
   req.logout();
   res.redirect('/');
+
+  alert('exports.signout');
 };
 
 /**

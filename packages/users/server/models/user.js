@@ -30,11 +30,13 @@ var validateUniqueEmail = function(value, callback) {
   });
 };
 
-/**
- * User Schema
- */
 
+/*
+Einem User gehört ein Tutorial, wenn er dessen ID bestitzt.
+
+*/
 var UserSchema = new Schema({
+  tutorialIds: [String],
   name: {
     type: String,
     required: true

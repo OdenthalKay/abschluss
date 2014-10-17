@@ -6,6 +6,12 @@ var users = require('../controllers/users'),
 
 module.exports = function(MeanUser, app, auth, database, passport) {
 
+  /*
+  Manuell hinzugefügt, damit das User-Objekt gespeichert werden kann.
+  */
+  app.route('/user')
+    .put(users.update);
+
   app.route('/logout')
     .get(users.signout);
   app.route('/users/me')
