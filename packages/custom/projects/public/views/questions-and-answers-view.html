@@ -1,0 +1,13 @@
+<div>   
+<h1>Fragen&Antworten</h1>
+<!-- hier muss noch findOne oder so hin ... -->
+    <div ng-controller="ProjectsQuestionsController">
+
+      <div ng-repeat="pair in questionAnswerPairs">
+        <textarea data-ng-model="pair.question" cols="1" rows="1" placeholder="Frage..." class="form-control"></textarea>
+        <textarea data-ng-model="pair.answer" cols="1" rows="2" placeholder="Antwort..." class="form-control"></textarea>
+      </div>
+      <button ng-click="save()">speichern</button>
+
+    </div>
+</div>

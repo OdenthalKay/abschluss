@@ -1,0 +1,10 @@
+
+   <div>
+   <h1>Übungsaufgaben</h1>
+  <div ng-repeat="exerciseText in exerciseTexts track by $index">
+        <h4>{{$index}}. Aufgabe:</h4>
+        <p>{{exerciseText}}</p>
+        <textarea data-ng-model="answerText[$index]" cols="1" rows="3" placeholder="Antworttext..." class="form-control"></textarea>
+      </div>
+      <button>speichern</button>
+   </div>

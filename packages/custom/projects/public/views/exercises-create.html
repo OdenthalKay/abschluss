@@ -1,0 +1,15 @@
+    <div ng-controller="ProjectsExercisesController">
+      <h1>Create Excercise</h1>
+             
+      <div ng-repeat="exerciseText in exerciseTexts track by $index">
+      	<button ng-click="removeExerciseText(exerciseText)">entfernen</button>
+        <h4>{{$index}}. Aufgabe:</h4>
+        <textarea data-ng-model="exerciseText" cols="1" rows="3" placeholder="Aufgabentext..." class="form-control"></textarea>
+      </div>
+	 <button ng-click="addExerciseText()">Hinzufügen</button>
+	 <div><button>speichern</button></div>
+
+
+
+
+    </div>

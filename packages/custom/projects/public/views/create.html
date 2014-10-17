@@ -1,0 +1,27 @@
+
+<div ng-controller="ProjectsController">
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          Projekt 1     <button class="btn btn-default">Freigeben</button>
+        </h4>
+
+        <div class="panel-body">
+          <ul>
+            <li>
+              <h4><a ui-sref="projectcreate.quizCreate">Ebene 1: Quiz</a></h4>
+            </li>
+            <li>
+              <h4><a ui-sref="projectcreate.questionsCreate">Ebene 2: Fragen und Antworten</a></h4>
+            </li>
+            <li>
+              <h4><a ui-sref="projectcreate.exercisesCreate">Ebene 3: Übunsgaufgaben</a></h4>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+      <section data-ui-view ></section>
+</div>
