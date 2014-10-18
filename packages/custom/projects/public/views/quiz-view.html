@@ -1,8 +1,6 @@
 
 <div>
 <h1>Quiz</h1>
-<!-- Hier muss noch 'ng-init="findOneQuiz()' hin-->
-<div ng-controller="ProjectsQuizController">
 		 <div ng-repeat="question in quizQuestions track by $index">
 			 <h3>{{question.text}}</h3>
 			 <form name="evaluateForm">
@@ -12,6 +10,4 @@
 		
 	</div>
 	<button ng-click="evaluateQuizAnswers()">evaluieren</button>
-
-</div>
 </div>

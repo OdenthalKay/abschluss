@@ -1,12 +1,5 @@
-    <div ng-controller="ProjectsQuestionsController">
+
       <h1>Create Questions&Answers</h1>
-             
-       <textarea data-ng-model="descriptionText" cols="1" rows="3" placeholder="Beschreibung..." class="form-control"></textarea>
-       <textarea data-ng-model="count" cols="1" rows="1" placeholder="Anzahl Fragen&Antworten, die Nutzer erstellen müssen" class="form-control"></textarea>
- 
-	   <button ng-click="createQuestionAnswerPairs()">erstellen</button>
-  
-    
-
-
-    </div>
+       <input data-ng-model="questions.descriptionText" cols="1" rows="3" placeholder="Beschreibung..." class="form-control"></input>
+       <p>Anzahl der Fragen&Antworten-Paare, die der Nutzer erstellen soll:</p>
+       <textarea data-ng-model="questions.count" cols="1" rows="1" placeholder="Anzahl Fragen&Antworten, die Nutzer erstellen müssen" class="form-control"></textarea>

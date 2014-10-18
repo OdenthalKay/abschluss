@@ -11,18 +11,22 @@ Ansonsten kann es zu einer 'Missing Schema'-Exception kommen und die
 Anwendung stürzt ab/startet nicht.
 */
 require('../../../slideshows/server/models/Slideshow.js');
+require('../../../projects/server/models/project.js');
 require('../../../comments/server/models/Comment.js');
 
 var SlideshowModel = mongoose.model('Slideshow');
 var SlideshowSchema = SlideshowModel.schema; 
 var CommentModel = mongoose.model('Comment');
 var CommentSchema = CommentModel.schema; 
+var ProjectModel = mongoose.model('Project');
+var ProjectSchema = ProjectModel.schema; 
 
 var TutorialSchema = new Schema({
   name: {
   	type: String
   },
   slideshows: [SlideshowSchema],
+  projects: [ProjectSchema],
   comments: [CommentSchema]
 });
 

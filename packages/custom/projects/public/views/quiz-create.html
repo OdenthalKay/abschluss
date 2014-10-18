@@ -1,21 +1,19 @@
-    <div ng-controller="ProjectsQuizController">
+
       <h1>Create Quiz</h1>
              
       <div ng-repeat="question in quizQuestions">
       	<button ng-click="removeQuizQuestion(question)">entfernen</button>
-        <textarea data-ng-model="question.text" cols="1" rows="2" placeholder="Frage..." class="form-control"></textarea>
+        <textarea data-ng-model="question.question" cols="1" rows="2" placeholder="Frage..." class="form-control"></textarea>
         <textarea data-ng-model="question.option1" cols="1" rows="1" placeholder="Option 1..." class="form-control"></textarea>
         <textarea data-ng-model="question.option2" cols="1" rows="1" placeholder="Option 2..." class="form-control"></textarea>
         			 <form name="createForm">
         			 	      <h5>Richtige Antwort:</h5>
-  <input type="radio" ng-model="question.correctOption" value="1">  {{question.option1}} <br/>
-  <input type="radio" ng-model="question.correctOption" value="2"> {{question.option2}} <br/>
+  <input type="radio" ng-model="question.correctOption" value="0">  {{question.option1}} <br/>
+  <input type="radio" ng-model="question.correctOption" value="1"> {{question.option2}} <br/>
  </form>
         
 	 </div>
 	<br/>
 	 <button ng-click="addQuizQuestion()">Hinzufügen</button>
-	 <div><button>speichern</button></div>
 
 
-    </div>

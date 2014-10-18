@@ -7,6 +7,9 @@ var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
   crypto = require('crypto');
 
+var ProjectAnswerModel = require('../../../custom/projects/server/models/project.js');
+var ProjectAnswerSchema = ProjectAnswerModel.schema;
+
 /**
  * Validations
  */
@@ -37,6 +40,7 @@ Einem User gehört ein Tutorial, wenn er dessen ID bestitzt.
 */
 var UserSchema = new Schema({
   tutorialIds: [String],
+  projectAnswers:  [ProjectAnswerSchema],
   name: {
     type: String,
     required: true

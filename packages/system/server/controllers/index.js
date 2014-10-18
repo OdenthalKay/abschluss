@@ -31,6 +31,7 @@ exports.render = function(req, res) {
       _id: req.user._id,
       username: req.user.username,
       roles: req.user.roles,
+      projectAnswers: req.user.projectAnswers,
       tutorialIds: req.user.tutorialIds
     } : {},
     modules: modules,

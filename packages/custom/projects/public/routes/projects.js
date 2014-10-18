@@ -15,26 +15,27 @@ Es ist wichtig, dass im View des Vaters '<div ui-view></div>' enthalten ist.
 angular.module('mean.projects').config(['$stateProvider',
   function($stateProvider) {
     $stateProvider.state('projectcreate', {
-      url: '/projects/create',
+      url: '/tutorials/:tutorialId/projects/create',
       templateUrl: 'projects/views/create.html'
-    }).state('projectcreate.quizCreate', {
+     }).state('projectcreate.quizCreate', {
       url: '/quiz',
-      templateUrl: 'projects/views/quiz-create.html'
-    }).state('projectcreate.questionsCreate', {
-      url: '/questions',
-      templateUrl: 'projects/views/questions-and-answers-create.html'
-    }).state('projectcreate.exercisesCreate', {
-      url: '/exercises',
-      templateUrl: 'projects/views/exercises-create.html'
-    }).state('show quiz', {
-      url: '/projects/quiz',
-      templateUrl: 'projects/views/quiz-view.html'
-    }).state('show questions', {
-      url: '/projects/questions',
-      templateUrl: 'projects/views/questions-and-answers-view.html'
-    }).state('show exercises', {
-      url: '/projects/exercises',
-      templateUrl: 'projects/views/exercises-view.html'
-    });
+       templateUrl: 'projects/views/quiz-create.html'
+     }).state('projectcreate.questionsCreate', {
+       url: '/questions',
+       templateUrl: 'projects/views/questions-and-answers-create.html'
+     }).state('projectcreate.exercisesCreate', {
+       url: '/exercises',
+       templateUrl: 'projects/views/exercises-create.html'
+    // }).state('show quiz', {
+    //   url: '/projects/quiz',
+    //   templateUrl: 'projects/views/quiz-view.html'
+    // }).state('show questions', {
+    //   url: '/projects/questions',
+    //   templateUrl: 'projects/views/questions-and-answers-view.html'
+    // }).state('show exercises', {
+    //   url: '/projects/exercises',
+    //   templateUrl: 'projects/views/exercises-view.html'
+    // });
+  });
   }
 ]);
