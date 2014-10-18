@@ -1,13 +1,56 @@
   
-     
+
 	<!-- 
 	article ist nicht von Anfang an auf dem Scope definiert, sondern wird durch die Funktion 'findOne()'
 	hinzugefügt. Der Variablenwert würde ansonsten wieder beim Aufruf der Route wieder geresettet werden,
 	da der controller neu geladen wird.
-	-->
-     <div ng-controller="TutorialsController" data-ng-init="findOne()">
-      <h2>Tutorial-Name: {{tutorial.name}}</h2>
-      <a class="btn" data-ng-click="remove(tutorial);">
-            <i class="glyphicon glyphicon-trash"></i>
-       </a>
+-->
+<div ng-controller="TutorialsController" data-ng-init="findOne()">
+  <h2>Tutorial: "{{tutorial.name}}"
+  <a class="btn" data-ng-click="remove(tutorial);">
+    <i class="glyphicon glyphicon-trash"></i>
+  </a>
+  </h2>
+ 
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          <button class="btn btn-sm btn-success">Neu</button>
+          Slideshows
+        </h4>
+      </div>
+      <div>
+        <div class="panel-body">
+          <ul>
+            <li ng-repeat="slideshow in tutorial.slideshows">
+              <h4><a>{{slideshow._id}}</a></h4>
+
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+              <button class="btn btn-sm btn-success">Neu</button>
+              Projekte
+            </h4>
+        </div>
+        <div>
+          <div class="panel-body">
+            <ul>
+              <li ng-repeat="project in tutorial.projects">
+                <h4><a>{{project._id}}</a></h4>
+                
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+  </div>
+
+</div>
