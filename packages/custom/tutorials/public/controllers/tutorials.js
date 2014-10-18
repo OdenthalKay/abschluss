@@ -5,8 +5,8 @@ Die Rückgabeobjekte von get, query sind ebenfalls Instanzen von 'Tutorials'.
 Bei ihnen ist eldiglich das Property '$promise' definiert.
 */
 
-angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Tutorials',
-  function($scope, $stateParams, $location, $http, Global, Tutorials) {
+angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Tutorials', 'Comments',
+  function($scope, $stateParams, $location, $http, Global, Tutorials, Comments) {
     $scope.global = Global;
     $scope.package = {
       name: 'tutorials'
@@ -18,6 +18,16 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
         tutorialId: $stateParams.tutorialId
       }, function successCB(tutorial) {
         $scope.tutorial = tutorial;
+
+
+        // Load Comments
+  
+      Comments.query({tutorialId:$stateParams.tutorialId}, function(comments) {
+        $scope.comments = comments;
+      });
+
+
+
       }, function errorCB(error) {
          // Es existiert kein Tutorial mit der ID
          // TODO: error-handler code verpacken

@@ -8,7 +8,7 @@ angular.module('mean.tutorials').config(['$stateProvider',
     }).state('tutorials create', {
       url: '/tutorials/create',
       templateUrl: 'tutorials/views/create.html'
-    }).state('tutorial by id', {
+    }).state('tutorial', {
         url: '/tutorials/:tutorialId',
         templateUrl: 'tutorials/views/view.html'
       }).state('tutorial edit', {

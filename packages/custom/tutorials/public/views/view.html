@@ -53,4 +53,18 @@
 
   </div>
 
+  <p>Comments
+  <ul>
+        <h2>Kommentare: {{comments.length}}</h2>
+        <li ng-repeat="comment in comments">
+      <a href="{{comment.link}}">link</a>
+      <p>
+      {{comment.created}}
+      {{glbal.name}}
+      <p>
+      <p>{{comment.message}}</p>
+        </li>
+      </ul>
+  </p>
+    
 </div>
