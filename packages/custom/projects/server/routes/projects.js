@@ -6,12 +6,12 @@ var projects = require('../controllers/projects');
 module.exports = function(Projects, app, auth, database) {
 
       app.route('/tutorials/:tutorialId/projects')
-      //.get(projects.all)
+      .get(projects.all)
       .post(projects.create); 
-    //app.route('/tutorials/:tutorialId/projects/:projectId')
-      //.get(slideshows.show)
+      app.route('/tutorials/:tutorialId/projects/:projectId')
+       .get(projects.show);
       //.put(slideshows.update)
       //.delete(slideshows.destroy);
 
-    //app.param('projectId', projects.project);
+    app.param('projectId', projects.project);
 };

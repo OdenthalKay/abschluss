@@ -2,8 +2,7 @@
 <h1>Fragen&Antworten</h1>
 
       <div ng-repeat="pair in questionAnswerPairs">
-        <textarea data-ng-model="pair.question" cols="1" rows="1" placeholder="Frage..." class="form-control"></textarea>
-        <textarea data-ng-model="pair.answer" cols="1" rows="2" placeholder="Antwort..." class="form-control"></textarea>
+        <textarea data-ng-model="pair.question" cols="1" rows="1" class="form-control"></textarea>
+        <textarea data-ng-model="pair.answer" cols="1" rows="2" class="form-control"></textarea>
       </div>
-      <button ng-click="save()">speichern</button>
 </div>

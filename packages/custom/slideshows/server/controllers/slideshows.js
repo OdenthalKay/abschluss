@@ -13,6 +13,11 @@ _ = require('lodash');
 
 exports.slideshow = function(req, res, next, id) {
   req.slideshow = req.tutorial.slideshows.id(id);
+
+  if (req.slideshow === null) {
+    return next(new Error('Failed to load slideshow' + id));
+  }
+
   next();
 };
 

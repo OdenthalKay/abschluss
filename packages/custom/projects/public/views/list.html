@@ -1,0 +1,23 @@
+    <div ng-controller="ProjectsController" data-ng-init="findAll()">
+
+      <div class="panel-group">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+              <button class="btn btn-sm btn-success">Neu</button>
+              Projekte
+            </h4>
+        </div>
+        <div>
+          <div class="panel-body">
+            <ul>
+            	<li ng-repeat="project in projects">
+            		<h4><a>{{project._id}}</a></h4>
+            		
+            	</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>

@@ -1,11 +1,15 @@
 
 <div>
 <h1>Quiz</h1>
-		 <div ng-repeat="question in quizQuestions track by $index">
-			 <h3>{{question.text}}</h3>
+		 <div ng-repeat="question in project.quizData track by $index">
+			 <h3>Frage: {{question.question}}</h3>
 			 <form name="evaluateForm">
+			 	<!--
   				<input type="radio" ng-model="quizAnswers[$index]" value="1">  {{question.option1}} <br/>
   				<input type="radio" ng-model="quizAnswers[$index]" value="2"> {{question.option2}} <br/>
+  			-->
+  				<input type="radio" ng-model="quizAnswers[$index]" value="0">  {{question.option1}} <br/>
+  				<input type="radio" ng-model="quizAnswers[$index]" value="1"> {{question.option2}} <br/>
  			</form>
 		
 	</div>

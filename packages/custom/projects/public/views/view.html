@@ -1,0 +1,27 @@
+
+<div ng-controller="ProjectsController" ng-init="findOne()">
+  <div class="panel-group">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h4 class="panel-title">
+          Projekt <button ng-click="absenden()" class="btn btn-default">absenden</button>    
+        </h4>
+
+        <div class="panel-body">
+          <ul>
+            <li>
+              <h4><a ui-sref="project.quiz">Ebene 1: Quiz</a></h4>
+            </li>
+            <li>
+              <h4><a ui-sref="project.questions">Ebene 2: Fragen und Antworten</a></h4>
+            </li>
+            <li>
+              <h4><a ui-sref="project.exercises">Ebene 3: Übunsgaufgaben</a></h4>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+      <section data-ui-view ></section>
+</div>

@@ -32,9 +32,52 @@ angular.module('mean.projects').controller('ProjectsController', ['$scope', '$st
       'Erläutern Sie die Vorteile des Scheduling Algorithmus FCFS.'
       ]};
 
-   $scope.create = function() {
-        console.log('descriptionText: '+$scope.questions.descriptionText);
+    // Hier werden die Antworten für die Auswertung zwischengespeichert (nur bei Quiz notwendig)
+    $scope.quizAnswers = [];
+    $scope.questionAnswerPairs = [];
+    $scope.exercisesQuestionAnswerPairs = [];
 
+
+   $scope.findOne = function() {
+      Projects.get({
+        projectId: $stateParams.projectId,
+        tutorialId: $stateParams.tutorialId
+      }, function(project) {
+        console.log(project);
+        $scope.project = project;
+        $scope.initQuestionAnswerPairs();
+        $scope.initExerciseQuestionAnswerPairs();
+      });
+    };
+
+    $scope.initQuestionAnswerPairs = function() {
+      for (var i = 0; i < $scope.project.questionsData.count; i = i +1) {
+          $scope.questionAnswerPairs[i] = {
+            question: 'Frage...',
+            answer: 'Antwort...'
+          };
+      }
+    };
+
+    $scope.initExerciseQuestionAnswerPairs = function() {
+      for (var i = 0; i < $scope.project.exercisesData.length; i = i +1) {
+          $scope.exercisesQuestionAnswerPairs[i] = {
+            question: $scope.project.exercisesData[i],
+            answer: 'Antwort...'
+          };
+      }
+    };
+
+    $scope.findAll = function() {
+      Projects.query({tutorialId:$stateParams.tutorialId}, function(projects) {
+        $scope.projects = projects;
+      });
+    };
+
+   /*
+    Erstelle ein komplettes Projekt mitsamt allen Ebenen.
+   */
+   $scope.create = function() {
         var project = new Projects({
           quizData: $scope.quizQuestions,
           questionsData: {
@@ -51,10 +94,19 @@ angular.module('mean.projects').controller('ProjectsController', ['$scope', '$st
         });
     };
 
+    $scope.absenden = function() {
+      // TODO:
+      // Prüfen ob alle Eingaben korrekt sind
+
+      var path = 'tutorials/'+$stateParams.tutorialId+'/projects';
+      console.log(path);
+          $location.path(path);
+    };
 
     /*
     QUIZ-Logic
     */
+    // Für Erstellung
     $scope.addQuizQuestion = function() {
       $scope.quizQuestions[$scope.quizQuestions.length] = {
         question: 'Frage',
@@ -70,6 +122,25 @@ angular.module('mean.projects').controller('ProjectsController', ['$scope', '$st
            $scope.quizQuestions.splice(i,1);
                  return;
         }
+      }
+    };
+
+    // Für Bearbeitung 
+    $scope.evaluateQuizAnswers = function() {
+      var errors = 0;
+
+      for (var i = 0; i < $scope.project.quizData.length; i = i+1) {
+        // String in Integer umwandeln
+        var quizAnswer = parseInt($scope.quizAnswers[i]);
+        if (quizAnswer !== $scope.project.quizData[i].correctOption) {
+            errors = errors +1;
+        }
+      }
+
+      if (errors > 0) {
+        alert('Fehler: '+errors +'. Das Quiz muss fehlerfrei sein, damit die nächste Ebene freigeschaltet wird.');
+      } else {
+        alert('Alles richtig!');
       }
     };
 

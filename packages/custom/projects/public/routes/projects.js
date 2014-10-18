@@ -26,16 +26,21 @@ angular.module('mean.projects').config(['$stateProvider',
      }).state('projectcreate.exercisesCreate', {
        url: '/exercises',
        templateUrl: 'projects/views/exercises-create.html'
-    // }).state('show quiz', {
-    //   url: '/projects/quiz',
-    //   templateUrl: 'projects/views/quiz-view.html'
-    // }).state('show questions', {
-    //   url: '/projects/questions',
-    //   templateUrl: 'projects/views/questions-and-answers-view.html'
-    // }).state('show exercises', {
-    //   url: '/projects/exercises',
-    //   templateUrl: 'projects/views/exercises-view.html'
-    // });
-  });
+     }).state('project', {
+       url: '/tutorials/:tutorialId/projects/:projectId',
+       templateUrl: 'projects/views/view.html'
+     }).state('project.quiz', {
+       url: '/quiz',
+       templateUrl: 'projects/views/quiz-view.html'
+     }).state('project.questions', {
+       url: '/questions',
+       templateUrl: 'projects/views/questions-and-answers-view.html'
+     }).state('project.exercises', {
+       url: '/exercises',
+       templateUrl: 'projects/views/exercises-view.html'
+     }).state('projects', {
+       url: '/tutorials/:tutorialId/projects',
+       templateUrl: 'projects/views/list.html'
+     });
   }
 ]);
