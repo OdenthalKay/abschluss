@@ -7,10 +7,11 @@
  *
  *
  */
-angular.module('mean.slideshoweditor').controller('SlideshoweditorController', ['$scope', '$timeout', '$stateParams', '$location', 'Global', 'Slideshows',
-  function($scope, $timeout, $stateParams, $location, Global, Slideshows) {
+angular.module('mean.slideshoweditor').controller('SlideshoweditorController', ['$scope', '$timeout', '$stateParams', '$location', 'Global', 'Slideshows', 'TutorialOwner',
+  function($scope, $timeout, $stateParams, $location, Global, Slideshows, TutorialOwner) {
     $scope.global = Global;
 
+  $scope.slideshowName = 'NeueSlideshow';
   $scope.slides = [];
   $scope.slide = null;
   $scope.ratio = 16 / 9;
@@ -23,15 +24,22 @@ angular.module('mean.slideshoweditor').controller('SlideshoweditorController', [
   $scope.color = '#000000';
 
 
+  $scope.init = function() {
+       if (!TutorialOwner.isOwner($scope.global.user, $stateParams.tutorialId)) {
+        alert('Dies ist nicht ihr Tutorial. Sie können keine Slideshow bei fremdem Tutorials erstellen.');
+        var path = 'tutorials/'+$stateParams.tutorialId+'/slideshows';
+        $location.path(path);
+      } else {
+        $scope.disableResponsiveness();
+      }
+    };
+
+
 /* 
 Beim Verlassen des Slideshoweditors soll wieder die Bootstrap Klasse
 'container' verwendet werden, damit die Applikation wieder responsive ist.
 */
 $scope.$on('$locationChangeStart', function( event ) {
-    var answer = confirm('Are you sure you want to leave this page?');
-    if (!answer) {
-        event.preventDefault();
-    }
     angular.element('#section-container').attr('class', 'container');
 });
 /* 
@@ -41,6 +49,8 @@ Beim Öffnen des Slideshoweditors soll die custom Klasse
 $scope.disableResponsiveness = function() {
   angular.element('#section-container').attr('class', 'container-full');
 };
+
+
 
 $scope.createEmptyLayer = function() {
     var layer = new Kinetic.Layer();
@@ -141,7 +151,7 @@ $scope.createEmptyLayer = function() {
 
     // Slides speichern
     var slideshow = new Slideshows({
-      name: 'NeueSlideshow',
+      name: $scope.slideshowName,
       slides: slideObjects
     });
 

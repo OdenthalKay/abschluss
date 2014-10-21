@@ -1,11 +1,10 @@
-<div class="" data-ng-controller="SlideshoweditorController" data-ng-init="disableResponsiveness()">
+<div class="" data-ng-controller="SlideshoweditorController" data-ng-init="init()">
 
+<textarea data-ng-model="slideshowName" cols="1" rows="1" class="form-control"></textarea>
 
 	<div class="left">
 		<div class="scrollable-slide-list">
-<!--
-			<div ng-repeat="slide in slides track by $index" id="slide{{$index}}" class="slide" ng-style="{'background-image': 'url({{ slide.imageData }})'}" ng-click="selectSlide($index)">
-			-->
+
 			<div ng-repeat="slide in slides track by $index" id="slide{{$index}}" class="slide" style="background-image: url({{ slide.imageData }})" ng-click="selectSlide($index)">
 
 			
@@ -27,9 +26,6 @@
 
 		<action-bar-directive></action-bar-directive>
 	</div>
-	<img id="preview" src=""></img>
-	<button ng-click="save()">Slideshow Erstellen</button>
-	<button ng-click="load()">Slideshow Laden</button>
 
 </div>
 

@@ -5,13 +5,22 @@ Die Rückgabeobjekte von get, query sind ebenfalls Instanzen von 'Tutorials'.
 Bei ihnen ist eldiglich das Property '$promise' definiert.
 */
 
-angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Tutorials', 'Comments',
-  function($scope, $stateParams, $location, $http, Global, Tutorials, Comments) {
+angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$stateParams', '$location', '$http', 'Global', 'Tutorials', 'Comments', 'TutorialOwner',
+  function($scope, $stateParams, $location, $http, Global, Tutorials, Comments, TutorialOwner) {
     $scope.global = Global;
     $scope.package = {
       name: 'tutorials'
     };
     $scope.name = '';
+
+    $scope.init = function() {
+      if (!TutorialOwner.isOwner($scope.global.user, $stateParams.tutorialId)) {
+        alert('Dies ist nicht ihr Tutorial. Sie können dieses Tutorial nicht editieren.');
+        $location.path('tutorials');
+      } else {
+        $scope.findOne();
+      }
+    };
 
     $scope.findOne = function() {
       Tutorials.get({
@@ -19,9 +28,7 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
       }, function successCB(tutorial) {
         $scope.tutorial = tutorial;
 
-
         // Load Comments
-  
       Comments.query({tutorialId:$stateParams.tutorialId}, function(comments) {
         $scope.comments = comments;
       });
@@ -47,6 +54,7 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
     };
 
     $scope.create = function() {
+      console.log($scope.create);
       console.log($scope.global.user);
       var tutorial = new Tutorials({
         name: $scope.name,

@@ -12,13 +12,25 @@ Bsp.: query({tutorialId:$stateParams.tutorialId}, cb);
 */
 
 
-angular.module('mean.slideshows').controller('SlideshowsController', ['$scope', '$stateParams', '$location', 'Global', 'Slideshows',
-  function($scope, $stateParams, $location, Global, Slideshows) {
+angular.module('mean.slideshows').controller('SlideshowsController', ['$scope', '$stateParams', '$location', 'Global', 'Slideshows', 'TutorialOwner',
+  function($scope, $stateParams, $location, Global, Slideshows, TutorialOwner) {
     $scope.global = Global;
     $scope.package = {
       name: 'slideshows'
     };
     $scope.name = '';
+
+      $scope.init = function() {
+      if (!TutorialOwner.isOwner($scope.global.user, $stateParams.tutorialId)) {
+        alert('Dies ist nicht ihr Tutorial. Sie können den Namen dieser Slideshow nicht editieren.');
+        var path = 'tutorials/'+$stateParams.tutorialId+'/slideshows/' + $stateParams.slideshowId;
+        $location.path(path);
+      } else {
+        $scope.findOne();
+      }
+    };
+
+  
 
       $scope.findOne = function() {
       Slideshows.get({

@@ -18,22 +18,11 @@ exports.render = function(req, res) {
     return req.user && req.user.roles.indexOf('admin') !== -1;
   }
 
-  // Send some basic starting info to the view
-
   /*
-  Hier müssen alle Eigenschaften gesetzt werden, die zur Laufzeit erreichbar sein sollen.
-  => tutorialIds muss hier hinzugefügt werden, damit zur Laufzeit mittels '$scope.global.user' die Zugehörigkeit
-     überprüft werden kann.
+  Das globale user-Objekt wird jetzt nicht mehr hier gesetzt, sondern über die
+  Route '/users/me'. Diese wird per http-GET aufgerufen, wenn home-view (= index.html) geöffnet wird.
   */
   res.render('index', {
-    user: req.user ? {
-      name: req.user.name,
-      _id: req.user._id,
-      username: req.user.username,
-      roles: req.user.roles,
-      projectAnswers: req.user.projectAnswers,
-      tutorialIds: req.user.tutorialIds
-    } : {},
     modules: modules,
     isAdmin: isAdmin,
     adminEnabled: isAdmin() && mean.moduleEnabled('mean-admin')

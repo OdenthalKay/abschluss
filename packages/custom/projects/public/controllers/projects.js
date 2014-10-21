@@ -11,8 +11,8 @@ da ansonsten ein neuer Scope erstellt wird und
 die Änderungen nicht im eigentlichen Scope auftauchen.
 */
 
-angular.module('mean.projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Global', 'Projects',
-  function($scope, $stateParams, $location, Global, Projects) {
+angular.module('mean.projects').controller('ProjectsController', ['$scope', '$stateParams', '$location', 'Global', 'Projects', 'TutorialOwner',
+  function($scope, $stateParams, $location, Global, Projects, TutorialOwner) {
     $scope.global = Global;
     $scope.package = {
       name: 'projects'
@@ -37,6 +37,13 @@ angular.module('mean.projects').controller('ProjectsController', ['$scope', '$st
     $scope.questionAnswerPairs = [];
     $scope.exercisesQuestionAnswerPairs = [];
 
+    $scope.init = function() {
+        if (!TutorialOwner.isOwner($scope.global.user, $stateParams.tutorialId)) {
+          alert('Dies ist nicht ihr Tutorial. Sie können keine Projekte bei fremden Tutorials erstellen.');
+          var path = 'tutorials/'+$stateParams.tutorialId+'/projects';
+          $location.path(path);
+        }
+    };
 
    $scope.findOne = function() {
       Projects.get({

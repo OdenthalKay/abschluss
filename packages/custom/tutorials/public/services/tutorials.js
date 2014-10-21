@@ -15,4 +15,18 @@ angular.module('mean.tutorials').factory('Tutorials', ['$resource',
 		'update': { method:'PUT' }
 		});
 	}
-]);
+]).factory('TutorialOwner', function() {
+  return {
+    isOwner: function(user, tutorialId) { 
+    	console.log(user);
+      var  tutorialIds = user.tutorialIds;
+      for (var i = 0; i < tutorialIds.length; i=i+1) {
+          if (tutorialId === tutorialIds[i]) {
+            return true;
+          }
+      }
+
+      return false;
+    }
+  };
+});

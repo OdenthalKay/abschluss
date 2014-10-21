@@ -6,6 +6,7 @@ angular.module('mean.slideshows').config(['$stateProvider',
       url: '/tutorials/:tutorialId/slideshows',
       templateUrl: 'slideshows/views/list.html'
     }).state('slideshow edit', {
+    	// Nur Name editierbar
         url: '/tutorials/:tutorialId/slideshows/:slideshowId/edit',
         templateUrl: 'slideshows/views/edit.html'
       });

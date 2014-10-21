@@ -17,6 +17,8 @@ Comments.register(function(app, auth, database) {
   Comments.routes(app, auth, database);
 
 
+
+
   
   Comments.aggregateAsset('css', 'comments.css');
 
