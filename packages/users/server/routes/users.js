@@ -9,7 +9,7 @@ module.exports = function(MeanUser, app, auth, database, passport) {
   /*
   Manuell hinzugefügt, damit das User-Objekt gespeichert werden kann.
   */
-  app.route('/user')
+  app.route('/user/:userId')
     .put(users.update);
 
   app.route('/logout')

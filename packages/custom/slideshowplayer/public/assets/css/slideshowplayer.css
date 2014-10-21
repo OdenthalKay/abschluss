@@ -1,0 +1,56 @@
+
+
+.fullscreen-container {
+  width: 100%;
+  height: 100%;
+  background: no-repeat; 
+  background-size: contain;
+  background-position: center;
+  position: relative;
+}
+
+.player-slide {
+  width: 60%;
+  height: auto;
+  display: block; /* dmait margin effekt hat */
+    margin-left: auto;
+    margin-right: auto;
+  border: 2px solid black;
+
+}
+
+.player-slides {
+  width: 100%;
+  background-color: #223344;
+}
+
+.fullscreen-container-footer {
+  position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.fullscreen-container-footer > button{
+  margin: 10px;
+  background-color: #CCCCCC;
+}
+
+.clickable-fullscreen-overlay-left {
+  height: 100%;
+  width: 15%;
+}
+
+.clickable-fullscreen-overlay-right {
+  position: absolute;
+  height: 100%;
+  left: 85%;
+  width: 15%;
+  top: 0;
+}
+
+
+
+
+
+
+

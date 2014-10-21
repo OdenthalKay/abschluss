@@ -19,23 +19,17 @@ weil die Zugehörigkeit zu einem Tutorial klar sein muss.
 Jetzt kann zur Laufzeit abgefragt werden, ob einem Nutzer ein Tutorial gehört oder nicht.
 */
 exports.update = function(req, res) {
-  var userId = req.param('user')._id;
-  var tutorialId = req.param('user').tutorialId;
+  var tutorialId = req.param('tutID');
 
-  /*
-  Suche User-Dokument und füge die neue tutorialId hinzu
-  */
-  User.findById(userId, function (err, userDocument) {
-      userDocument.tutorialIds.push(tutorialId);
-      userDocument.save(function(){
-       if (err) {
-        return res.json(500, {
-          error: 'Cannot update user'
-        });
-      }
-      res.json(userDocument);
-    });
-  });
+  req.profile.tutorialIds.push(tutorialId);
+       req.profile.save(function(err){
+        if (err) {
+         return res.json(500, {
+           error: 'Cannot update user'
+         });
+       }
+       res.json(req.profile);
+     });
 };
 
 
@@ -142,6 +136,7 @@ exports.me = function(req, res) {
  * Find user by id
  */
 exports.user = function(req, res, next, id) {
+  console.log('exports.user');
   User
     .findOne({
       _id: id

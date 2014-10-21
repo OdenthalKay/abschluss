@@ -7,8 +7,8 @@
  *
  *
  */
-angular.module('mean.slideshoweditor').controller('SlideshoweditorController', ['$scope', '$timeout', 'Global', 'Slideshows',
-  function($scope, $timeout, Global, Slideshows) {
+angular.module('mean.slideshoweditor').controller('SlideshoweditorController', ['$scope', '$timeout', '$stateParams', '$location', 'Global', 'Slideshows',
+  function($scope, $timeout, $stateParams, $location, Global, Slideshows) {
     $scope.global = Global;
 
   $scope.slides = [];
@@ -19,7 +19,6 @@ angular.module('mean.slideshoweditor').controller('SlideshoweditorController', [
   $scope.defaultFontSize = 25;
   $scope.defaultFontStyle = 'Arial';
   $scope.stage = {};
-
   $scope.activeStageElement = null;
   $scope.color = '#000000';
 
@@ -142,15 +141,14 @@ $scope.createEmptyLayer = function() {
 
     // Slides speichern
     var slideshow = new Slideshows({
-      name: 'SlideshowXYZ',
+      name: 'NeueSlideshow',
       slides: slideObjects
     });
 
-    //var tutorialId = $stateParams.tutorialId;
-    var tutorialId = '5442b74d48c3f67701f6fe4f';
+    var tutorialId = $stateParams.tutorialId;
     slideshow.$save({tutorialId:tutorialId},function(response) {
-      //var path = 'tutorials/'+tutorialId+'/slideshows/' + response._id;
-      //$location.path(path);
+      var path = 'tutorials/'+tutorialId+'/slideshows';
+      $location.path(path);
       console.log(response);
     });
   };

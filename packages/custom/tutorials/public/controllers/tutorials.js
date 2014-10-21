@@ -47,6 +47,7 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
     };
 
     $scope.create = function() {
+      console.log($scope.global.user);
       var tutorial = new Tutorials({
         name: $scope.name,
         slideshows: []
@@ -54,9 +55,11 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
 
       tutorial.$save(function(response) {
         // ID des neuen tutorials persistent im userDocument speichern
-        $scope.global.user.tutorialId = response._id;
-        $http.put('/user',{user:$scope.global.user}).success(function(){
+        //$scope.global.user.tutorialId = response._id;
+        $http.put('/user/'+$scope.global.user._id,{tutID:response._id}).success(function(){
           });
+        //$http.put('/user',{user:$scope.global.user}).success(function(){
+          //});
         $location.path('tutorials/' + response._id);
       });
       $scope.name = '';
