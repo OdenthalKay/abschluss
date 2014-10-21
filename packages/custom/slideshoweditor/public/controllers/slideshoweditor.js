@@ -11,25 +11,19 @@ angular.module('mean.slideshoweditor').controller('SlideshoweditorController', [
   function($scope, $timeout, Global) {
     $scope.global = Global;
 
-  /*
-   * Variablen
-   *
-   */
   $scope.slides = [];
   $scope.ratio = 16 / 9;
-  $scope.previewStageWidth = 100;
-  $scope.previewStageHeight = $scope.previewStageWidth / $scope.ratio;
   $scope.slideWidth = 800;
   $scope.slideHeight = $scope.slideWidth / $scope.ratio;
   $scope.defaultFontSize = 25;
   $scope.defaultFontStyle = 'Arial';
-  $scope.editorStageBackgroundColor = '#ffdddd';
-  $scope.editorStage = {};
-  $scope.editorLayer = {};
+  $scope.stage = {};
 
   $scope.activeStageElement = null;
-  $scope.activePreviewStage = null;
   $scope.color = '#000000';
+
+  $scope.layers = [];
+  $scope.layer = null;
 
 /* 
 Beim Verlassen des Slideshoweditors soll wieder die Bootstrap Klasse
@@ -50,87 +44,100 @@ $scope.disableResponsiveness = function() {
   angular.element('#section-container').attr('class', 'container-full');
 };
 
-  /*
-   * Wird von der Direktive "editorStage" aufgerufen.
-   *
-   */
-  $scope.createEditorStage = function(editorStageDivID) {
-    $scope.editorStage = new Kinetic.Stage({
-      container: editorStageDivID,
-      width: $scope.slideWidth,
-      height: $scope.slideHeight
-    });
-
-    $scope.editorLayer = new Kinetic.Layer();
-
+$scope.addEmptyLayer = function() {
+    var layer = new Kinetic.Layer();
     var background = new Kinetic.Rect({
       x: 0,
       y: 0,
       width: $scope.slideWidth,
       height: $scope.slideHeight,
-      fill: $scope.editorStageBackgroundColor,
+      fill: '#FFFFFF',
     });
+    layer.add(background);
 
-    // add the shape to the layer
-    $scope.editorLayer.add(background);
-    $scope.editorStage.add($scope.editorLayer);
-  };
-
-
-/*
-   * Wird von der Direktive "scrollableSlideList" aufgerufen.
-   *
-   */
-  $scope.addSlide = function() {
-    var slideId = $scope.slides.length;
-    $scope.slides[$scope.slides.length] = {id: slideId};
-    $scope.$apply(); // muss hier stehen
-
-    $timeout(function() {
-      $scope.createPreviewStage('slide'+slideId);
-    });    
-  };
+    $scope.layers[$scope.layers.length] = layer;
+    $scope.layer = layer;
+    $scope.stage.add(layer);
+};
 
   /*
-   * Wird von der Direktive "scrollableSlideList" aufgerufen.
+   * Wird von der Direktive "editorStage" aufgerufen.
    *
    */
-  $scope.removeSlide = function() {
-    if ($scope.activePreviewStage !== null) {
-         $scope.activePreviewStage.destroy();
-         
-         // TODO: zugehörige slide entfernen
-         //$scope.$apply(); // muss hier stehen  
-    }
+  $scope.createEditorStage = function(editorStageDivID) {
+    $scope.stage = new Kinetic.Stage({
+      container: editorStageDivID,
+      width: $scope.slideWidth,
+      height: $scope.slideHeight
+    });
   };
 
-  $scope.createPreviewStage = function(previewStageDivID) {
-    var stage = new Kinetic.Stage({
-      container: previewStageDivID,
-      width: $scope.previewStageWidth,
-      height: $scope.previewStageHeight
-    });
+  $scope.init = function() {
+    // Preview-Leiste
 
-    var layer = new Kinetic.Layer();
-
-    var background = new Kinetic.Rect({
-      x: 0,
-      y: 0,
-      width: $scope.previewStageWidth,
-      height: $scope.previewStageHeight,
-      fill: 'white',
-      stroke: 'black',
-      strokeWidth: 1
-    });
-
-    // markiere eine stage als markiert, wenn ihr layer geklickt wurde
-    layer.on('click', function() {
-          $scope.activePreviewStage = layer.getStage();
-      });
-
-    layer.add(background);
-    stage.add(layer);
   };
+
+
+  $scope.selectSlide = function(index) {
+    $scope.updateSlideData();
+    angular.element('#slide'+index).attr('class', 'slide selected');
+    $scope.layer = $scope.layers[index];
+    $scope.layer.slideIndex = index;
+    $scope.layer.moveToTop();
+  };
+
+  $scope.updateSlideData = function() {
+if ($scope.layer !== null) {
+      var index = $scope.layer.slideIndex;
+      angular.element('#slide'+index).attr('class', 'slide');
+   
+
+       $scope.layer.toImage({
+      callback: function(img) {
+        var slide = $scope.slides[index];
+        slide.jsonData = $scope.layer.toJSON();
+        slide.imageData = img.src;
+        $scope.$apply();
+      }
+    });
+   }
+  };
+
+  $scope.addSlide = function() {
+    var index = $scope.slides.length;
+    $scope.updateSlideData();
+    $scope.addEmptyLayer();
+    $scope.layer.moveToTop();
+
+ // Funktioniert nur, wenn layer zuvor der stage hinzugefügt wurde
+  $scope.layer.toImage({
+  callback: function(img) {
+    var slide = {
+      index: index,
+      jsonData: $scope.layer.toJSON(),
+      imageData: img.src
+    };
+
+    /*
+    Hier muss $scope.$apply() stehen, da der Callback-Code
+    asynchron ausgeführt wird. Ansonsten werden die Änderungen
+    nicht direkt sichtbar.
+    */
+    var newIndex = $scope.slides.length;
+    $scope.layer.slideIndex = newIndex;
+    $scope.slides[newIndex] = slide;  
+    $scope.$apply();
+    angular.element('#slide'+index).attr('class', 'slide selected');
+  }
+});
+
+
+  };
+
+  $scope.removeSlide = function(index) {
+      $scope.slides.splice(index,1);
+  };
+
 
   /*
    * Wird als Callback für "window.resize" in der Direktive "editorStage" registriert.
@@ -149,16 +156,16 @@ $scope.disableResponsiveness = function() {
 
     // Hintergrundlayer mitsamt Elementen auf die Breite/Hoehe des Containers skalieren
     var scale = editorStageContainerWidth / $scope.slideWidth;
-    $scope.editorStage.scale({
+    $scope.stage.scale({
       x: scale,
       y: scale
     });
-    $scope.editorStage.size({
+    $scope.stage.size({
       width: editorStageContainerWidth,
       height: editorStageContainerWidth / $scope.ratio
     });
-    console.log($scope.editorStage.getWidth());
-    console.log($scope.editorStage.getHeight());
+    console.log($scope.stage.getWidth());
+    console.log($scope.stage.getHeight());
   };
 
 
@@ -199,7 +206,7 @@ $scope.disableResponsiveness = function() {
           $scope.draw();
       });
 
-    $scope.editorLayer.add(label);
+    $scope.layer.add(label);
     $scope.draw();
   };
 
@@ -233,7 +240,7 @@ $scope.disableResponsiveness = function() {
   };
 
   $scope.draw = function() {
-    $scope.editorStage.draw();
+    $scope.stage.draw();
   };
 
   $scope.deleteActiveElement = function() {

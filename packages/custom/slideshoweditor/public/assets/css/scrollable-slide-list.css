@@ -1,3 +1,23 @@
+
+
+.slide {
+ width: 150px;
+ height: 100px;
+  background: no-repeat; 
+  background-size: contain;
+}
+
+.selected {
+  border: 1px solid red;
+}
+
+.slide-image {
+	width: 100%;
+  height: auto;
+}
+
+
+
 .scrollable-slide-list {
   overflow-y: scroll;
   height: 800px;

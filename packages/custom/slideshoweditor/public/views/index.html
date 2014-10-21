@@ -2,7 +2,22 @@
 
 
 	<div class="left">
-		<scrollable-slide-list-directive></scrollable-slide-list-directive>
+		<div class="scrollable-slide-list">
+<!--
+			<div ng-repeat="slide in slides track by $index" id="slide{{$index}}" class="slide" ng-style="{'background-image': 'url({{ slide.imageData }})'}" ng-click="selectSlide($index)">
+			-->
+			<div ng-repeat="slide in slides track by $index" id="slide{{$index}}" class="slide" style="background-image: url({{ slide.imageData }})" ng-click="selectSlide($index)">
+			
+				<button ng-click="removeSlide()" type="button" class="btn btn-danger btn-sm">
+				<span class="glyphicon glyphicon-trash"></span> 
+			</button>
+			</div>
+			
+			<button ng-click="addSlide()" type="button" id="scrollable-slide-list-add" class="btn btn-success btn-default">
+				<span class="glyphicon glyphicon-plus"></span> hinzufügen
+			</button>
+
+		</div>
 	</div>
 	<div class="middle">
 		<editor-stage-directive></editor-stage-directive>
@@ -11,6 +26,7 @@
 
 		<action-bar-directive></action-bar-directive>
 	</div>
+	<img id="preview" src=""></img>
 
 </div>
 
