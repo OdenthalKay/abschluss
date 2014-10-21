@@ -7,11 +7,12 @@
  *
  *
  */
-angular.module('mean.slideshoweditor').controller('SlideshoweditorController', ['$scope', '$timeout', 'Global', 
-  function($scope, $timeout, Global) {
+angular.module('mean.slideshoweditor').controller('SlideshoweditorController', ['$scope', '$timeout', 'Global', 'Slideshows',
+  function($scope, $timeout, Global, Slideshows) {
     $scope.global = Global;
 
   $scope.slides = [];
+  $scope.slide = null;
   $scope.ratio = 16 / 9;
   $scope.slideWidth = 800;
   $scope.slideHeight = $scope.slideWidth / $scope.ratio;
@@ -22,8 +23,6 @@ angular.module('mean.slideshoweditor').controller('SlideshoweditorController', [
   $scope.activeStageElement = null;
   $scope.color = '#000000';
 
-  $scope.layers = [];
-  $scope.layer = null;
 
 /* 
 Beim Verlassen des Slideshoweditors soll wieder die Bootstrap Klasse
@@ -44,7 +43,7 @@ $scope.disableResponsiveness = function() {
   angular.element('#section-container').attr('class', 'container-full');
 };
 
-$scope.addEmptyLayer = function() {
+$scope.createEmptyLayer = function() {
     var layer = new Kinetic.Layer();
     var background = new Kinetic.Rect({
       x: 0,
@@ -54,17 +53,15 @@ $scope.addEmptyLayer = function() {
       fill: '#FFFFFF',
     });
     layer.add(background);
-
-    $scope.layers[$scope.layers.length] = layer;
-    $scope.layer = layer;
-    $scope.stage.add(layer);
+    return layer;
 };
+
 
   /*
    * Wird von der Direktive "editorStage" aufgerufen.
    *
    */
-  $scope.createEditorStage = function(editorStageDivID) {
+   $scope.createEditorStage = function(editorStageDivID) {
     $scope.stage = new Kinetic.Stage({
       container: editorStageDivID,
       width: $scope.slideWidth,
@@ -72,70 +69,156 @@ $scope.addEmptyLayer = function() {
     });
   };
 
-  $scope.init = function() {
-    // Preview-Leiste
+  /*
+  Wird aufgerufen wenn ein Label/Bild angeklickt wird
+  TODO: an Bild anpassen (Fallunterscheidung)
 
+  */
+  $scope.clickHandler = function() {
+    if ($scope.activeStageElement !== null) {
+      $scope.activeStageElement.getTag().visible(false);
+    }
+
+    $scope.activeStageElement = this;
+    this.getTag().visible(true);
+    $scope.draw();
   };
 
 
-  $scope.selectSlide = function(index) {
-    $scope.updateSlideData();
-    angular.element('#slide'+index).attr('class', 'slide selected');
-    $scope.layer = $scope.layers[index];
-    $scope.layer.slideIndex = index;
-    $scope.layer.moveToTop();
+  /*
+  Während der Bearbeitung mit editor werden eigenständige slide-objekte verwendet,
+  keine ngResource Instanzen
+  */
+  $scope.load = function() {
+      Slideshows.get({
+        slideshowId: '54469f5ac579710a3acfd38e',
+        tutorialId: '5442b74d48c3f67701f6fe4f'
+      }, function(slideshow) {
+        // Falls eine slideshow mit der entsprechenden ID existiert, wird sie zur Initialisierung genommen
+        for (var i = 0; i < slideshow.slides.length; i=i+1) {
+              var slideDocument = slideshow.slides[i];
+
+              var slide = {
+                jsonData: slideDocument.jsonData,
+                imageData: slideDocument.imageData
+              };
+
+              // Für jedes Slide-Datenbankobjekt einen Layer erstellen
+              var layer = Kinetic.Node.create(slide.jsonData);
+              $scope.stage.add(layer);
+              
+            /*
+            Allen Labels/Bildern eines Layers einen onClickListener zuweisen
+            (ist in jsonData nicht enthalten, muss manuell gemacht werden)
+            ACHTUNG: das erste Kind ist der Layer selbst
+            */
+            for (var j = 1; j < layer.getChildren().length; j = j+1) {
+              var element = layer.getChildren()[j];
+              element.on('click', $scope.clickHandler);
+            }
+
+              // Layer als Eigenschaft setzen und slide-Arary hinzufügen
+              slide.layer = layer;
+              $scope.slides[$scope.slides.length] = slide;
+        }
+
+        // Aktuelle Slide setzen
+        $scope.slide = $scope.slides[0];
+      });
   };
 
-  $scope.updateSlideData = function() {
-if ($scope.layer !== null) {
-      var index = $scope.layer.slideIndex;
-      angular.element('#slide'+index).attr('class', 'slide');
-   
+  $scope.save = function() {
+    $scope.updateSlide($scope.slide);
 
-       $scope.layer.toImage({
-      callback: function(img) {
-        var slide = $scope.slides[index];
-        slide.jsonData = $scope.layer.toJSON();
-        slide.imageData = img.src;
-        $scope.$apply();
-      }
+    // SlideObjekte gemäß SlideSchema erstellen
+    var slideObjects = [];
+    for (var i = 0; i < $scope.slides.length; i= i+1) {
+      var slideObject = {
+        jsonData: $scope.slides[i].jsonData,
+        imageData: $scope.slides[i].imageData
+      };
+      slideObjects[i] = slideObject;
+    }
+
+    // Slides speichern
+    var slideshow = new Slideshows({
+      name: 'SlideshowXYZ',
+      slides: slideObjects
     });
-   }
+
+    //var tutorialId = $stateParams.tutorialId;
+    var tutorialId = '5442b74d48c3f67701f6fe4f';
+    slideshow.$save({tutorialId:tutorialId},function(response) {
+      //var path = 'tutorials/'+tutorialId+'/slideshows/' + response._id;
+      //$location.path(path);
+      console.log(response);
+    });
   };
 
-  $scope.addSlide = function() {
-    var index = $scope.slides.length;
-    $scope.updateSlideData();
-    $scope.addEmptyLayer();
-    $scope.layer.moveToTop();
+   $scope.updateSlide = function(slide) {
+      var layer = slide.layer;
 
- // Funktioniert nur, wenn layer zuvor der stage hinzugefügt wurde
-  $scope.layer.toImage({
-  callback: function(img) {
-    var slide = {
-      index: index,
-      jsonData: $scope.layer.toJSON(),
-      imageData: img.src
+      layer.toImage({
+        callback: function(img) {
+          slide.jsonData = layer.toJSON();
+          slide.imageData = img.src;
+          $scope.$apply();
+        }
+      });
     };
 
-    /*
-    Hier muss $scope.$apply() stehen, da der Callback-Code
-    asynchron ausgeführt wird. Ansonsten werden die Änderungen
-    nicht direkt sichtbar.
-    */
-    var newIndex = $scope.slides.length;
-    $scope.layer.slideIndex = newIndex;
-    $scope.slides[newIndex] = slide;  
-    $scope.$apply();
-    angular.element('#slide'+index).attr('class', 'slide selected');
-  }
-});
+  $scope.selectSlide = function(index) {
+     // Umrandung unsichtbar machen
+     if ($scope.activeStageElement !== null) {
+      $scope.activeStageElement.getTag().visible(false);
+      $scope.draw();
+    }
 
+    // Status vom vorherigen Layer speichern, falls es einen gab
+   $scope.updateSlide($scope.slide);
 
+    // Neue Slide setzen und zugehörigen Layer ganz oben positionieren, damit sichtbar
+    $scope.slide = $scope.slides[index];
+    $scope.slide.layer.moveToTop();
   };
 
+
+    $scope.addNewSlide = function() {
+        if ($scope.slide !== null) {
+          $scope.updateSlide($scope.slide);
+        } 
+        
+        // Neuen layer erstellen
+        var newLayer = $scope.createEmptyLayer();
+        
+        // 'toImage' funktioniert nur, wenn Layer zuvor der Stage hinzuegfügt wurde!
+        $scope.stage.add(newLayer);
+        newLayer.toImage({
+        callback: function(img) {
+          var newSlide = {
+            layer: newLayer,
+            jsonData: newLayer.toJSON(),
+            imageData: img.src
+          };
+          /*
+          Hier muss $scope.$apply() stehen, da der Callback-Code
+          asynchron ausgeführt wird. Ansonsten werden die Änderungen
+          nicht direkt sichtbar.
+          */
+          $scope.slides[$scope.slides.length] = newSlide; 
+          $scope.slide = newSlide; 
+          $scope.$apply();
+        }
+      });
+};
+
   $scope.removeSlide = function(index) {
-      $scope.slides.splice(index,1);
+    var slide = $scope.slides[index];
+    slide.layer.remove();
+    slide.layer.destroy();
+    $scope.slides.splice(index,1);
+
+    $scope.activeStageElement = null;
   };
 
 
@@ -168,11 +251,6 @@ if ($scope.layer !== null) {
     console.log($scope.stage.getHeight());
   };
 
-
-  /*
-   *
-   *
-   */
    $scope.addLabel = function() {
     var label = new Kinetic.Label({
       x: 20,
@@ -193,20 +271,9 @@ if ($scope.layer !== null) {
     }));
     label.getTag().visible(false);
 
+    label.on('click', $scope.clickHandler);
 
-    label.on('click', function() {
-          // In den Code muss noch eine Fallunterscheidung bzgl. Label/Bild
-          // gemacht werden
-          if ($scope.activeStageElement !== null) {
-            $scope.activeStageElement.getTag().visible(false);
-          }
-
-          $scope.activeStageElement = label;
-          label.getTag().visible(true);
-          $scope.draw();
-      });
-
-    $scope.layer.add(label);
+    $scope.slide.layer.add(label);
     $scope.draw();
   };
 
