@@ -29,4 +29,12 @@ angular.module('mean.tutorials').factory('Tutorials', ['$resource',
       return false;
     }
   };
+}).factory('MeinService', function() {
+  return {
+    isLoggedIn: function($q, $timeout, $http, $location) {
+
+
+      return true;
+    }
+  };
 });

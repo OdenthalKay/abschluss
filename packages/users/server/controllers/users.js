@@ -56,8 +56,7 @@ exports.signin = function(req, res) {
 exports.signout = function(req, res) {
   req.logout();
   res.redirect('/');
-
-  alert('exports.signout');
+  
 };
 
 /**
