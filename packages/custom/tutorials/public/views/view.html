@@ -28,7 +28,7 @@
           <ul>
             <li ng-repeat="slideshow in tutorial.slideshows">
               <h4><a href="#!/tutorials/{{tutorial._id}}/slideshows/{{slideshow._id}}">{{slideshow._id}}</a>
-                  <a ng-show="isTutorialOwner(tutorial._id)" class="btn" data-ng-click="remove(tutorial);">
+                  <a ng-show="isTutorialOwner(tutorial._id)" class="btn" data-ng-click="removeSlideshow(slideshow._id)">
                     <i class="glyphicon glyphicon-trash"></i>
                   </a>
               </h4>
@@ -51,6 +51,9 @@
             <ul>
               <li ng-repeat="project in tutorial.projects">
                 <h4><a href="#!/tutorials/{{tutorial._id}}/projects/{{project._id}}">{{project._id}}</a></h4>
+                <a ng-show="isTutorialOwner(tutorial._id)" class="btn" data-ng-click="removeProject(project._id)">
+                    <i class="glyphicon glyphicon-trash"></i>
+                  </a>
                 
               </li>
             </ul>

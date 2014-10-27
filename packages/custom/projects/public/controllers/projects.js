@@ -96,7 +96,7 @@ angular.module('mean.projects').controller('ProjectsController', ['$scope', '$st
 
         var tutorialId = $stateParams.tutorialId;
         project.$save({tutorialId:tutorialId},function(response) {
-          var path = 'tutorials/'+tutorialId+'/projects/' + response._id;
+          var path = 'tutorials/'+tutorialId;
           $location.path(path);
         });
     };

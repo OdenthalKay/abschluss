@@ -45,8 +45,6 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
         $scope.comments = comments;
       });
 
-
-
       }, function errorCB(error) {
          // Es existiert kein Tutorial mit der ID
          // TODO: error-handler code verpacken
@@ -90,6 +88,26 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
          });    
     };
 
+    $scope.removeSlideshow = function(slideshowID) {
+        for (var i = 0; i < $scope.tutorial.slideshows.length; i=i+1) {
+          if (slideshowID === $scope.tutorial.slideshows[i]._id) {
+            $scope.tutorial.slideshows.splice(i, 1);
+            $scope.update();
+            return;
+          }
+        }
+    };
+
+      $scope.removeProject = function(projectID) {
+        for (var i = 0; i < $scope.tutorial.projects.length; i=i+1) {
+          if (projectID === $scope.tutorial.projects[i]._id) {
+            $scope.tutorial.projects.splice(i, 1);
+            $scope.update();
+            return;
+          }
+        }
+    };
+
 
     $scope.update = function() {
       var tutorial = $scope.tutorial;
@@ -119,7 +137,6 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
 
     $scope.isTutorialOwner = function(id) {
       var isOwner = TutorialOwner.isOwner($scope.global.user, id);
-      //var isOwner = TutorialOwner.isOwner($scope.global.user, $stateParams.tutorialId);
       return isOwner;
     };
 
