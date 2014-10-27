@@ -44,7 +44,6 @@ angular.module('mean.comments').controller('CommentsController', ['$scope', '$ro
     };
 
     $scope.create = function() {
-      //alert($scope.previousLocation);
         var comment = new Comments({
           message: $scope.message,
           link: $rootScope.previousLocation

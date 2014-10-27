@@ -34,6 +34,12 @@ angular.module('mean.slideshoweditor').config(['$stateProvider',
       resolve: {
         loggedin: isLoggedIn
       }
+    }).state('slideshows edit', {
+      url: '/tutorials/:tutorialId/slideshows/:slideshowId/edit',
+      templateUrl: 'slideshoweditor/views/index.html',
+      resolve: {
+        loggedin: isLoggedIn
+      }
     });
   }
 ]);

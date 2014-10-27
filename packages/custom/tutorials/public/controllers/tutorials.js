@@ -13,6 +13,17 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
     };
     $scope.name = '';
 
+
+    /*
+    Der User muss jedes Mal geladen werden, wenn die Tutorials angezeigt werden,
+    damit sichergestellt ist, dass alle Daten aktuell sind.
+    */
+    $scope.loadUser = function() {
+      $http.get('/users/me').success(function(data, status, headers, config) {
+            $scope.global.user = data;
+          });
+      };
+
     $scope.init = function() {
       if (!TutorialOwner.isOwner($scope.global.user, $stateParams.tutorialId)) {
         alert('Dies ist nicht ihr Tutorial. Sie können dieses Tutorial nicht editieren.');
@@ -23,6 +34,7 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
     };
 
     $scope.findOne = function() {
+      $scope.loadUser();
       Tutorials.get({
         tutorialId: $stateParams.tutorialId
       }, function successCB(tutorial) {
@@ -48,30 +60,27 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
     };
 
     $scope.findAll = function() {
+      $scope.loadUser();
     	Tutorials.query(function(tutorials) {
     		$scope.tutorials = tutorials;
     	});
     };
 
     $scope.create = function() {
-      console.log($scope.create);
-      console.log($scope.global.user);
       var tutorial = new Tutorials({
         name: $scope.name,
         slideshows: []
       });
 
       tutorial.$save(function(response) {
-        // ID des neuen tutorials persistent im userDocument speichern
-        //$scope.global.user.tutorialId = response._id;
         $http.put('/user/'+$scope.global.user._id,{tutID:response._id}).success(function(){
+            $location.path('tutorials/'+response._id);
           });
-        //$http.put('/user',{user:$scope.global.user}).success(function(){
-          //});
-        $location.path('tutorials/' + response._id);
+        $scope.name = '';
+
       });
-      $scope.name = '';
     };
+  
 
     $scope.remove = function(tutorial) {
       tutorial.$remove({}, 
@@ -80,6 +89,7 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
          }, function errorCB() {
          });    
     };
+
 
     $scope.update = function() {
       var tutorial = $scope.tutorial;
@@ -109,6 +119,7 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
 
     $scope.isTutorialOwner = function(id) {
       var isOwner = TutorialOwner.isOwner($scope.global.user, id);
+      //var isOwner = TutorialOwner.isOwner($scope.global.user, $stateParams.tutorialId);
       return isOwner;
     };
 

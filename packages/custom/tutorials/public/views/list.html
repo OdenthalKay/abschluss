@@ -1,5 +1,7 @@
     <div ng-controller="TutorialsController" data-ng-init="findAll()">
 
+      
+
       <div class="panel-group">
         <div class="panel panel-default">
         <div class="panel-heading">
@@ -8,6 +10,7 @@
              Bei aktivierung des Buttons 'Neu' wird der State von UI-Router neu gesetzt, so dass
              die URL automatisch angepasst und der View zum Erstellen neuer Tutorials angezeigt wird.
              -->
+            
               <button class="btn btn-sm btn-success" ui-sref="tutorials create">Neu</button>
               Meine Tutorials
             </h4>
@@ -20,6 +23,8 @@
               ob dem Nutzer ein Tutorial gehört.
               Falls ja, evaluiert die Expression nach 'true' und es in der Liste angezeigt. Ansonsten nicht.
               -->
+
+              
               <li ng-repeat="tutorial in tutorials" ng-show="isTutorialOwner(tutorial._id)">
                 <h4><a ng-click="showTutorial(tutorial._id)">{{tutorial.name}} ({{tutorial._id}})</a></h4>
                 
@@ -29,6 +34,7 @@
         </div>
       </div>
       </div>
+    
 
       <div class="panel panel-default">
         <div class="panel-heading">

@@ -136,7 +136,14 @@ $scope.createEmptyLayer = function() {
       });
   };
 
+
   $scope.save = function() {
+    if ($scope.slides.length === 0) {
+      alert('Eine Slideshow kann nur gespeichert werden, wenn sie mindestens eine Slide enthält.');
+      return;
+    }
+
+
     $scope.updateSlide($scope.slide);
 
     // SlideObjekte gemäß SlideSchema erstellen
@@ -157,11 +164,11 @@ $scope.createEmptyLayer = function() {
 
     var tutorialId = $stateParams.tutorialId;
     slideshow.$save({tutorialId:tutorialId},function(response) {
-      var path = 'tutorials/'+tutorialId+'/slideshows';
+      var path = 'tutorials/'+tutorialId;
       $location.path(path);
-      console.log(response);
     });
   };
+
 
    $scope.updateSlide = function(slide) {
       var layer = slide.layer;

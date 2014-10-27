@@ -18,7 +18,6 @@ Comments.register(function(app, auth, database) {
 
 
 
-
   
   Comments.aggregateAsset('css', 'comments.css');
 
