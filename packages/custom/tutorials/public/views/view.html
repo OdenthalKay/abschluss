@@ -1,13 +1,13 @@
   
 
 	<!-- 
-	article ist nicht von Anfang an auf dem Scope definiert, sondern wird durch die Funktion 'findOne()'
+	tutorial ist nicht von Anfang an auf dem Scope definiert, sondern wird durch die Funktion 'findOne()'
 	hinzugefügt. Der Variablenwert würde ansonsten wieder beim Aufruf der Route wieder geresettet werden,
 	da der controller neu geladen wird.
 -->
 <div ng-controller="TutorialsController" data-ng-init="findOne()">
-  <h2>Tutorial: "{{tutorial.name}}"
-  <a class="btn" data-ng-click="remove(tutorial);">
+  <h2>Tutorial: {{tutorial.name}}
+  <a ng-show="isTutorialOwner(tutorial._id)" class="btn" data-ng-click="remove(tutorial);">
     <i class="glyphicon glyphicon-trash"></i>
   </a>
   </h2>
@@ -16,7 +16,7 @@
     <div class="panel panel-default">
       <div class="panel-heading">
         <h4 class="panel-title">
-          <button class="btn btn-sm btn-success">Neu</button>
+          <button ng-show="isTutorialOwner(tutorial._id)" class="btn btn-sm btn-success" ng-click="showSlideshowCreateView(tutorial._id)">Neu</button>
           Slideshows
         </h4>
       </div>
@@ -24,7 +24,7 @@
         <div class="panel-body">
           <ul>
             <li ng-repeat="slideshow in tutorial.slideshows">
-              <h4><a>{{slideshow._id}}</a></h4>
+              <h4><a href="#!/tutorials/{{tutorial._id}}/slideshows/{{slideshow._id}}">{{slideshow._id}}</a></h4>
 
             </li>
           </ul>
@@ -35,7 +35,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-              <button class="btn btn-sm btn-success">Neu</button>
+              <button ng-show="isTutorialOwner(tutorial._id)" class="btn btn-sm btn-success" ng-click="showProjectCreateView(tutorial._id)">Neu</button>
               Projekte
             </h4>
         </div>
@@ -43,7 +43,7 @@
           <div class="panel-body">
             <ul>
               <li ng-repeat="project in tutorial.projects">
-                <h4><a>{{project._id}}</a></h4>
+                <h4><a href="#!/tutorials/{{tutorial._id}}/projects/{{project._id}}">{{project._id}}</a></h4>
                 
               </li>
             </ul>
@@ -53,14 +53,13 @@
 
   </div>
 
-  <p>Comments
+  <p><h2>Kommentare: {{comments.length}}</h2>
   <ul>
-        <h2>Kommentare: {{comments.length}}</h2>
         <li ng-repeat="comment in comments">
       <a href="{{comment.link}}">link</a>
       <p>
       {{comment.created}}
-      {{glbal.name}}
+      {{global.name}}
       <p>
       <p>{{comment.message}}</p>
         </li>

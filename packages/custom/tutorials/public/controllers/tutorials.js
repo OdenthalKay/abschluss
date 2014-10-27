@@ -96,10 +96,19 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
       $location.path('tutorials/'+id);
     };
 
+    $scope.showSlideshowCreateView = function(tutorialId) {
+      $location.path('tutorials/'+tutorialId+'/slideshows/create');
+    };
+
+      $scope.showProjectCreateView = function(tutorialId) {
+      $location.path('tutorials/'+tutorialId+'/projects/create');
+    };
+
+
+
 
     $scope.isTutorialOwner = function(id) {
       var isOwner = TutorialOwner.isOwner($scope.global.user, id);
-      console.log(isOwner);
       return isOwner;
     };
 
