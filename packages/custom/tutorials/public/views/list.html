@@ -1,18 +1,46 @@
     <div ng-controller="TutorialsController" data-ng-init="findAll()">
 
       <div class="panel-group">
+        <div class="panel panel-default">
+        <div class="panel-heading">
+          <h4 class="panel-title">
+            <!--
+             Bei aktivierung des Buttons 'Neu' wird der State von UI-Router neu gesetzt, so dass
+             die URL automatisch angepasst und der View zum Erstellen neuer Tutorials angezeigt wird.
+             -->
+              <button class="btn btn-sm btn-success" ui-sref="tutorials create">Neu</button>
+              Meine Tutorials
+            </h4>
+        </div>
+        <div>
+          <div  class="panel-body">
+            <ul>
+              <li ng-repeat="tutorial in tutorials" ng-show="isTutorialOwner(tutorial._id)">
+                <h4><a ng-click="showTutorial(tutorial._id)">{{tutorial.name}} ({{tutorial._id}})</a></h4>
+                
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      </div>
+
       <div class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-              <button class="btn btn-sm btn-success">Neu</button>
-              Tutorials
+            <!--
+             Bei aktivierung des Buttons 'Neu' wird der State von UI-Router neu gesetzt, so dass
+             die URL automatisch angepasst und der View zum Erstellen neuer Tutorials angezeigt wird.
+             -->
+              <button class="btn btn-sm btn-success" ui-sref="tutorials create">Neu</button>
+              Alle Tutorials
             </h4>
         </div>
         <div>
           <div class="panel-body">
             <ul>
             	<li ng-repeat="tutorial in tutorials">
-            		<h4><a>{{tutorial.name}}</a><span class="glyphicon glyphicon-trash"></span></h4>
+            		<h4><a ng-click="showTutorial(tutorial._id)">{{tutorial.name}} ({{tutorial._id}})</a></h4>
             		
             	</li>
             </ul>

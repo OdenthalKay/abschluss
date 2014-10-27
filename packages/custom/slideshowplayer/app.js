@@ -16,13 +16,6 @@ Slideshowplayer.register(function(app, auth, database) {
   //We enable routing. By default the Package Object is passed to the routes
   Slideshowplayer.routes(app, auth, database);
 
-  //We are adding a link to the main menu for all authenticated users
-  Slideshowplayer.menus.add({
-    title: 'slideshowplayer example page',
-    link: 'slideshowplayer example page',
-    roles: ['authenticated'],
-    menu: 'main'
-  });
   
   Slideshowplayer.aggregateAsset('css', 'slideshowplayer.css');
 

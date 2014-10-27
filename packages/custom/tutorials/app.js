@@ -16,6 +16,14 @@ Tutorials.register(function(app, auth, database, slideshows) {
   //We enable routing. By default the Package Object is passed to the routes
   Tutorials.routes(app, auth, database, slideshows);
 
+    //We are adding a link to the main menu for all authenticated users
+  Tutorials.menus.add({
+    title: 'Tutorials',
+    link: 'tutorials',
+    roles: ['authenticated'],
+    menu: 'main'
+  });
+
 
   
   Tutorials.aggregateAsset('css', 'tutorials.css');

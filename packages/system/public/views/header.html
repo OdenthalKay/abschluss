@@ -6,7 +6,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-        <a class="navbar-brand" ui-sref="home" mean-token="'site-title'">MEAN</a>
+        <a class="navbar-brand" ui-sref="home" mean-token="'site-title'">Home</a>
          
           <button type="button" class="navbar-toggle" data-toggle="collapse"  data-ng-click="isCollapsed = !isCollapsed">
             <span class="sr-only">Toggle navigation</span> <!-- nur wichtig für screenreaders -->
@@ -31,7 +31,6 @@
               <li><a ui-sref='auth.login' data-ng-hide="global.authenticated">Log In</a></li>
               <!-- anzeigen, wenn eingeloggt-->
               <li><a href="/logout" data-ng-show="global.authenticated">Log Out</a></li>
-              <li><a href="#" data-ng-show="global.authenticated">Account</a></li>
           </ul>
         </div><!-- /.navbar-collapse -->
       </nav> 

@@ -87,5 +87,26 @@ angular.module('mean.tutorials').controller('TutorialsController', ['$scope', '$
         $location.path('tutorials/' + tutorial._id);
       });
     };
+
+    /*
+    Wenn in der Tutorial-Liste der Link eines Tutorials angeglickt wird,
+    präsentiert diese Methode dem Nutzer das korrekte Tutorial
+    */
+    $scope.showTutorial = function(id) {
+      $location.path('tutorials/'+id);
+    };
+
+
+    $scope.isTutorialOwner = function(id) {
+      var isOwner = TutorialOwner.isOwner($scope.global.user, id);
+      console.log(isOwner);
+      return isOwner;
+    };
+
+
+
+
+
+
   }
   ]);
